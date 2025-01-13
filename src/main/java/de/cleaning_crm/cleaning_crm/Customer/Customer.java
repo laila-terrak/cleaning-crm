@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 @Entity
 @Table(name = "Customers")
 public class Customer {
+
     @Id
     @GeneratedValue
     @Column(name = "ID")
