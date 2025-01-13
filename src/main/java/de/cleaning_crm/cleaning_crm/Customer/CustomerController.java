@@ -1,5 +1,7 @@
 package de.cleaning_crm.cleaning_crm.Customer;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,18 +14,21 @@ public class CustomerController {
 
     // Create (POST)
     @PostMapping
-    public Customer createCustomer(@RequestBody Customer customer) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public Customer createCustomer(@Valid @RequestBody Customer customer) {
         return customerRepository.save(customer);
     }
 
     // Read (GET - alle Benutzer)
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }
 
     // Read (GET - einzelner Benutzer)
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Customer getCustomerById(@PathVariable Long id) {
         return customerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Benutzer nicht gefunden"));
@@ -31,6 +36,7 @@ public class CustomerController {
 
     // Update (PUT)
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Customer updateCustomer(@PathVariable Long id, @RequestBody Customer updatedCustomer) {
         Customer existingCustomer = customerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Benutzer nicht gefunden"));
@@ -43,6 +49,7 @@ public class CustomerController {
 
     // Delete (DELETE)
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public String deleteUser(@PathVariable Long id) {
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Benutzer nicht gefunden"));

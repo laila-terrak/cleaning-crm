@@ -1,6 +1,8 @@
 package de.cleaning_crm.cleaning_crm.Customer;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "Customers")
@@ -10,13 +12,16 @@ public class Customer {
     @Column(name = "ID")
     private long id;
 
+    @NotBlank(message = "Vorname ist erforderlich")
     @Column(name = "First Name")
     private String firstName;
 
+    @NotBlank(message = "Nachname ist erforderlich")
     @Column(name = "Last Name")
     private String lastName;
 
-    @Basic(optional = false)
+    @Basic(optional = true)
+    @Email
     private String email;
 
     //default JPA constructor
