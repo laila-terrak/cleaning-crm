@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
+import { useNavigate } from 'react-router-dom';
+import AddButton from '../components/AddButton';
 
 const Customers = () => {
+
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const handleRowClick = (params) => {
+    navigate(`/customers/${params.row.id}`)
+  };
 
   useEffect(() => {
     // Fetch customer data
@@ -34,11 +41,13 @@ const Customers = () => {
   ];
 
   return (
+    <>
     <Paper sx={{ height: 400, width: '100%' }}>
       {loading ? (
         <p>Loading data...</p>
       ) : (
         <DataGrid
+        onRowClick={(params) => handleRowClick(params)}       
           rows={customers.map((customer) => ({
             id: customer.id, 
             fname: customer.firstName, 
@@ -56,6 +65,8 @@ const Customers = () => {
         />
       )}
     </Paper>
+    <AddButton/>
+    </>
   );
 };
 
