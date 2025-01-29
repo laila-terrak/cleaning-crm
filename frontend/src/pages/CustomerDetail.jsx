@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import React, { useEffect, useState } from 'react';
 import { Box } from "@mui/material";
 import BasicCard from "../components/BasicCard";
@@ -10,15 +10,45 @@ import Link from '@mui/material/Link';
 import PersonIcon from '@mui/icons-material/Person';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
+import BasicModal from "../components/BasicModal";
+import { Try } from "@mui/icons-material";
 
 
  const CustomerDetails  = () => {
     const { id } = useParams();
-   const [customerDetail, setCustomerDetail] = useState();
-   const [loading, setLoading] = useState(true);
+    const [customerDetail, setCustomerDetail] = useState();
+    const [loading, setLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const navigate = useNavigate();
+    const handleOpen = () => {
+        setIsModalOpen(true);
+    };
+    
+    const handleClose = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleAccept = async () => {
+      try {
+         fetch(
+          `/api/customers/${id}`,
+          { method: "DELETE" }
+        ).then((handleAccept) => {
+          if (handleAccept.ok) {
+            navigate("/customers");
+          } else{
+            alert("Fehler beim Löschen des Eintrags!");
+          }
+        })
+          
+      } catch (error) {
+        alert("irgendwas ist shiefgelaufen!");
+      }
+        
+      };
+    
  
    useEffect(() => {
-     // Fetch customer data
      fetch(`/api/customers/${id}`)
        .then((response) => {
          if (!response.ok) {
@@ -35,8 +65,7 @@ import Button from '@mui/material/Button';
          setLoading(false);
        });
    }, []);
- 
- 
+   
    return (
     <>
        
@@ -68,11 +97,10 @@ import Button from '@mui/material/Button';
               </Typography>
             </Stack>
             <Divider />
-            <Stack direction="row" useFlexGap sx={{alignItems: "center",my: 1}}>
-              <Button  variant="contained" startIcon={<DeleteIcon/>} sx={{color: 'rgb(255, 255, 255)', background: 'rgb(211, 47, 47)'}}>
+              <Button  variant="contained" startIcon={<DeleteIcon/>} sx={{color: 'rgb(255, 255, 255)', background: 'rgb(211, 47, 47)', my:1}} onClick={handleOpen}>
                 Delete
               </Button>
-            </Stack>
+              <BasicModal open = {isModalOpen} handleClose= {handleClose} handleAccept= {handleAccept} firstName={customerDetail.firstName} lastName={customerDetail.lastName}/>
           </Box>
         </Box>
         </>     
@@ -80,4 +108,5 @@ import Button from '@mui/material/Button';
     </>
    );
  };
+
  export default CustomerDetails;
