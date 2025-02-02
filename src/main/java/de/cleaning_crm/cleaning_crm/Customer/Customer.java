@@ -23,7 +23,7 @@ public class Customer {
 
     @NotBlank(message = "Email ist erforderlich")
     @Basic(optional = true)
-    @Email
+    @Email(message = "ungültige Email")
     private String email;
 
     //default JPA constructor

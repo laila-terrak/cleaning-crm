@@ -37,7 +37,7 @@ public class CustomerController {
     // Update (PUT)
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Customer updateCustomer(@PathVariable Long id, @RequestBody Customer updatedCustomer) {
+    public Customer updateCustomer(@PathVariable Long id, @Valid @RequestBody Customer updatedCustomer) {
         Customer existingCustomer = customerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Benutzer nicht gefunden"));
 

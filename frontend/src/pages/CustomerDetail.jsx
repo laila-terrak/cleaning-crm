@@ -14,6 +14,7 @@ import BasicModal from "../components/BasicModal";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
+import EditForm from "../components/EditForm";
 
 const CustomerDetails = () => {
   const { id } = useParams();
@@ -117,53 +118,69 @@ const CustomerDetails = () => {
                 )}
               </Stack>
               <Divider />
-              <Stack
-                direction="row"
-                spacing={1}
-                useFlexGap
-                sx={{ alignItems: "center", my: 1 }}
-              >
-                <EmailIcon sx={{ color: "rgb(189, 189, 189)" }} />
-                <Typography>
-                  <Link
-                    href={`mailto:${customerDetail.email}`}
-                    sx={{ color: "rgb(47, 104, 172)" }}
+              {toggle && (
+                <>
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    useFlexGap
+                    sx={{ alignItems: "center", my: 1 }}
                   >
-                    {customerDetail.email}
-                  </Link>
-                </Typography>
-              </Stack>
-              <Stack
-                direction="row"
-                spacing={1}
-                useFlexGap
-                sx={{ alignItems: "center", my: 1 }}
-              >
-                <PersonIcon sx={{ color: "rgb(189, 189, 189)" }} />
-                <Typography variant="p">
-                  {customerDetail.firstName} {customerDetail.lastName}
-                </Typography>
-              </Stack>
-              <Divider />
-              <Button
-                variant="contained"
-                startIcon={<DeleteIcon />}
-                sx={{
-                  color: "rgb(255, 255, 255)",
-                  background: "rgb(211, 47, 47)",
-                  my: 1,
-                }}
-                onClick={handleOpen}
-              >
-                Delete
-              </Button>
-              <BasicModal
-                open={isModalOpen}
-                handleClose={handleClose}
-                handleAccept={handleAccept}
-                firstName={customerDetail.firstName}
-                lastName={customerDetail.lastName}
-              />
+                    <EmailIcon sx={{ color: "rgb(189, 189, 189)" }} />
+                    <Typography>
+                      <Link
+                        href={`mailto:${customerDetail.email}`}
+                        sx={{ color: "rgb(47, 104, 172)" }}
+                      >
+                        {customerDetail.email}
+                      </Link>
+                    </Typography>
+                  </Stack>
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    useFlexGap
+                    sx={{ alignItems: "center", my: 1 }}
+                  >
+                    <PersonIcon sx={{ color: "rgb(189, 189, 189)" }} />
+                    <Typography variant="p">
+                      {customerDetail.firstName} {customerDetail.lastName}
+                    </Typography>
+                  </Stack>
+                  <Divider />
+                  <Button
+                    variant="contained"
+                    startIcon={<DeleteIcon />}
+                    sx={{
+                      color: "rgb(255, 255, 255)",
+                      background: "rgb(211, 47, 47)",
+                      my: 1,
+                    }}
+                    onClick={handleOpen}
+                  >
+                    Delete
+                  </Button>
+                  <BasicModal
+                    open={isModalOpen}
+                    handleClose={handleClose}
+                    handleAccept={handleAccept}
+                    firstName={customerDetail.firstName}
+                    lastName={customerDetail.lastName}
+                  />
+                </>
+              )}
+              {!toggle && (
+                <EditForm
+                  firstName={customerDetail.firstName}
+                  lastName={customerDetail.lastName}
+                  email={customerDetail.email}
+                  id={id}
+                  handleCloseEditForm={(updatedData) => {
+                    setToggle(true);
+                    setCustomerDetail(updatedData);
+                  }}
+                />
+              )}
             </Box>
           </Box>
         </>
