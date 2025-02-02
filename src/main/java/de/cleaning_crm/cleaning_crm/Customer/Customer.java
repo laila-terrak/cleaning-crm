@@ -21,6 +21,7 @@ public class Customer {
     @Column(name = "Last Name")
     private String lastName;
 
+    @NotBlank(message = "Email ist erforderlich")
     @Basic(optional = true)
     @Email
     private String email;
